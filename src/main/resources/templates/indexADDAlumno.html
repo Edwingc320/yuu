@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Alumno</title>
+</head>
+<body>
+    <h1>Formulario de Alumno</h1>
+
+    <form id="formAlumno">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="matricula">Matrícula:</label>
+        <input type="text" id="matricula" name="matricula" required>
+        <br>
+        <button type="submit">Agregar Alumno</button>
+    </form>
+
+    <script>
+        document.getElementById("formAlumno").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById("nombre").value;
+            const matricula = document.getElementById("matricula").value;
+
+            try {
+                const response = await fetch("/ADDAlumno?nombre=" + nombre + "&matricula=" + matricula, {
+                    method: "POST"
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    alert(result);
+
+                    // Limpiar el formulario
+                    document.getElementById("nombre").value = "";
+                    document.getElementById("matricula").value = "";
+                } else {
+                    alert("Error al agregar alumno: " + response.statusText);
+                }
+            } catch (error) {
+                alert("Error de conexión: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
